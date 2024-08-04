@@ -7,6 +7,9 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
+
+import { useState } from "react";
 
 export enum FormFieldTypes {
   INPUT = "input",
@@ -22,13 +25,21 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
+  phone: z.string().optional(),
 });
 
 const PatientForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      email: "",
+      phone: "",
     },
   });
 
@@ -50,14 +61,32 @@ const PatientForm = () => {
         <CustomFormField
           control={form.control}
           fieldType={FormFieldTypes.INPUT}
-          name="name"
+          name="username"
           label="Full name"
           placeholder="Gustavo Gomes"
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
         />
 
-        <Button type="submit">Submit</Button>
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldTypes.INPUT}
+          name="email"
+          label="E-mail"
+          placeholder="GustavoGomes@mail.com"
+          iconSrc="/assets/icons/email.svg"
+          iconAlt="email"
+        />
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldTypes.PHONE_INPUT}
+          name="phone"
+          label="Phone number"
+          placeholder="(51) 9 9988-7766"
+        />
+
+        <SubmitButton isLoading={isLoading}>Cadastrar</SubmitButton>
       </form>
     </Form>
   );

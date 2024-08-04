@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   FormControl,
@@ -10,10 +8,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, Form } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { FormFieldTypes } from "./forms/PatientForm";
 
 import Image from "next/image";
+import PhoneInput from "react-phone-number-input/input";
+import { E164Number } from "libphonenumber-js/core";
+import { Checkbox } from "./ui/checkbox";
 
 interface CustomProps {
   control: Control<any>;
@@ -27,7 +28,7 @@ interface CustomProps {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (filed: any) => React.ReactNode;
+  renderSkeleton?: (field: any) => React.ReactNode;
 }
 
 const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
@@ -46,7 +47,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
               className="ml-2"
             />
           )}
-
           <FormControl>
             <Input
               placeholder={placeholder}
@@ -54,6 +54,58 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
               className="shad-input border-0"
             />
           </FormControl>
+        </div>
+      );
+
+    case FormFieldTypes.PHONE_INPUT:
+      return (
+        <FormControl>
+          <PhoneInput
+            defaultCountry="US"
+            placeholder={props.placeholder}
+            international
+            withCountryCallingCode
+            value={field.value as E164Number | undefined}
+            onChange={field.onChange}
+            className="input-phone"
+          />
+        </FormControl>
+      );
+    case FormFieldTypes.CHECKBOX:
+      return (
+        <FormControl>
+          <div className="flex items-center gap-4">
+            <Checkbox
+              id={props.name}
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+            <label htmlFor={props.name} className="checkbox-label">
+              {props.label}
+            </label>
+          </div>
+        </FormControl>
+      );
+    case FormFieldTypes.DATE_PICKER:
+      return (
+        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+          <Image
+            src="/assets/icons/calendar.svg"
+            height={24}
+            width={24}
+            alt="user"
+            className="ml-2"
+          />
+          {/* <FormControl>
+              <ReactDatePicker
+                showTimeSelect={props.showTimeSelect ?? false}
+                selected={field.value}
+                onChange={(date: Date) => field.onChange(date)}
+                timeInputLabel="Time:"
+                dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+                wrapperClassName="date-picker"
+              />
+            </FormControl> */}
         </div>
       );
     default:
@@ -66,15 +118,13 @@ const CustomFormField = (props: CustomProps) => {
   return (
     <FormField
       control={control}
-      name="username"
+      name={name}
       render={({ field }) => (
         <FormItem className="flex-1">
           {fieldType === FormFieldTypes.CHECKBOX && label && (
             <FormLabel>{label}</FormLabel>
           )}
-
           <RenderInput field={field} props={props} />
-
           <FormMessage className="shad-error" />
         </FormItem>
       )}

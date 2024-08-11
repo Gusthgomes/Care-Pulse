@@ -15,6 +15,7 @@ import Image from "next/image";
 import PhoneInput from "react-phone-number-input/input";
 import { E164Number } from "libphonenumber-js/core";
 import { Checkbox } from "./ui/checkbox";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 import ReactDatePicker from "react-datepicker";
 
@@ -114,6 +115,23 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
           </FormControl>
         </div>
       );
+    case FormFieldTypes.SELECT:
+      return (
+        <FormControl>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+              <SelectTrigger className="shad-select-trigger">
+                <SelectValue placeholder={props.placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className="shad-select-content">
+              {props.children}
+            </SelectContent>
+          </Select>
+        </FormControl>
+      );
+    case FormFieldTypes.SKELETON:
+      return props.renderSkeleton ? props.renderSkeleton(field) : null;
     default:
       break;
   }

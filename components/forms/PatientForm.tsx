@@ -31,7 +31,7 @@ const PatientForm = () => {
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      name: "", // Alterado de 'name' para 'username' para corresponder ao schema
+      name: "",
       email: "",
       phone: "",
     },

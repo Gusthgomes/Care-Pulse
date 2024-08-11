@@ -93,6 +93,8 @@ const PatientForm = () => {
           name="phone"
           label="Phone number"
           placeholder="(51) 9 9988-7766"
+          iconSrc="/assets/icons/phone.svg"
+          iconAlt="phone"
         />
 
         <SubmitButton isLoading={isLoading}>Cadastrar</SubmitButton>

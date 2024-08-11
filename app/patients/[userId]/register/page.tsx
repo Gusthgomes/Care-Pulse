@@ -1,8 +1,11 @@
-import PatientForm from "@/components/forms/PatientForm";
+import RegisterForm from "@/components/forms/RegisterForm";
+import { getUser } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 import Link from "next/link";
 
-const Registration = () => {
+const Registration = async ({ params: { userId } }: SearchParamProps) => {
+  const user = await getUser(userId);
+
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto">
@@ -16,7 +19,7 @@ const Registration = () => {
             className="mb-12 h-10 w-fit"
           />
 
-          <PatientForm />
+          <RegisterForm user={user} />
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">

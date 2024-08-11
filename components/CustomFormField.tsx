@@ -16,6 +16,10 @@ import PhoneInput from "react-phone-number-input/input";
 import { E164Number } from "libphonenumber-js/core";
 import { Checkbox } from "./ui/checkbox";
 
+import ReactDatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 interface CustomProps {
   control: Control<any>;
   fieldType: FormFieldTypes;
@@ -98,16 +102,16 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             alt="user"
             className="ml-2"
           />
-          {/* <FormControl>
-              <ReactDatePicker
-                showTimeSelect={props.showTimeSelect ?? false}
-                selected={field.value}
-                onChange={(date: Date) => field.onChange(date)}
-                timeInputLabel="Time:"
-                dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
-                wrapperClassName="date-picker"
-              />
-            </FormControl> */}
+          <FormControl>
+            <ReactDatePicker
+              showTimeSelect={props.showTimeSelect ?? false}
+              selected={field.value}
+              onChange={(date: Date | null) => field.onChange(date)}
+              timeInputLabel="Time:"
+              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+              wrapperClassName="date-picker"
+            />
+          </FormControl>
         </div>
       );
     default:

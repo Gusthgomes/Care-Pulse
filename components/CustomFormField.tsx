@@ -18,8 +18,9 @@ import { Checkbox } from "./ui/checkbox";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 import ReactDatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from "react-datepicker";
+import { Textarea } from "./ui/textarea";
 
 interface CustomProps {
   control: Control<any>;
@@ -93,6 +94,17 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
           </div>
         </FormControl>
       );
+    case FormFieldTypes.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={props.placeholder}
+            {...field}
+            className="shad-textArea"
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
     case FormFieldTypes.DATE_PICKER:
       return (
         <div className="flex rounded-md border border-dark-500 bg-dark-400">
@@ -109,7 +121,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
               selected={field.value}
               onChange={(date: Date | null) => field.onChange(date)}
               timeInputLabel="Time:"
-              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+              dateFormat={props.dateFormat ?? "dd/MM/yy"}
               wrapperClassName="date-picker"
             />
           </FormControl>
